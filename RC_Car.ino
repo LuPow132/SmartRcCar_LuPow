@@ -56,10 +56,56 @@ void loop() {
   ch3Value = readChannel(CH3, -100, 100, -10  0);
   ch4Value = readChannel(CH4, -100, 100, 0);
 
+  //Forward/Backward
+  //////////////////////////////////////////////////////////////////////
 
-  if (ch1Value > 10){
-
+  //we will use +- 10 as center 
+  //If more than 10 then user wanna move robot forward
+  if (ch2Value > 10){
+    //drive motor forward with mapping value for PWM
+    int PWMValue = map(abs(ch2Value), 0, 100, 0, 255);
+    analogWrite(PWMPin, PWMValue);
+    digitalWrite(PinADrive, HIGH);
+    digitalWrite(PINBDrive, LOW);
   }
+  //If less than -10 then user wanna move robot backward
+  else if(ch2Value < -10){
+    //drive motor backward with mapping value for PWM
+    int PWMValue = map(abs(ch2Value), 0, 100, 0, 255);
+    analogWrite(PWMPin, PWMValue);
+    digitalWrite(PinADrive, LOW);
+    digitalWrite(PINBDrive, HIGH);
+  }
+  //else if value is between 10 and -10 then we will stop the motor
+  else{
+    digitalWrite(PinADrive, LOW);
+    digitalWrite(PINBDrive, LOW);
+  }
+  //////////////////////////////////////////////////////////////////////
+
+  //Left/Right
+  //////////////////////////////////////////////////////////////////////
+
+  //we will use +- 10 as center
+  //If more than 10 then user wanna turn right
+  if (ch1Value > 10){
+    //drive motor to turn right
+    digitalWrite(PinASteering, HIGH);
+    digitalWrite(PINBSteering, LOW);
+  }
+  //If less than -10 then user wanna move robot backward
+  else if(ch1Value < -10){
+    //drive motor to turn left
+    digitalWrite(PinASteering, LOW);
+    digitalWrite(PINBSteering, HIGH);
+  }
+  //else if value is between 10 and -10 then we will stop the motor
+  else{
+    digitalWrite(PinASteering, LOW);
+    digitalWrite(PINBSteering, LOW);
+  }
+  //////////////////////////////////////////////////////////////////////
+
   //For Debug Value Toggle this
   // Serial.print("Ch1: ");
   // Serial.print(ch1Value);
