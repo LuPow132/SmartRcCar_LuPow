@@ -42,6 +42,7 @@ bool readSwitch(byte channelInput, bool defaultValue){
 
 //Start run
 void setup() {
+  Serial.begin(115200);
   // define every CH pin as input
   pinMode(CH1, INPUT);
   pinMode(CH2, INPUT);
@@ -63,6 +64,7 @@ void loop() {
   LXValue = readChannel(CH3, -100, 100, 0);
   LYValue = readChannel(CH4, -100, 100, 0);
 
+  Serial.println(RXValue);
   //Forward/Backward
   //////////////////////////////////////////////////////////////////////
 
@@ -72,16 +74,16 @@ void loop() {
     //drive motor forward with mapping value for PWM
     int PWMValue = map(abs(RYValue), 0, 100, 0, 255);
     analogWrite(PWMPin, PWMValue);
-    digitalWrite(PinADrive, HIGH);
-    digitalWrite(PinBDrive, LOW);
+    digitalWrite(PinADrive, LOW);
+    digitalWrite(PinBDrive, HIGH);
   }
   //If less than -10 then user wanna move robot backward
   else if(RYValue < -10){
     //drive motor backward with mapping value for PWM
     int PWMValue = map(abs(RYValue), 0, 100, 0, 255);
     analogWrite(PWMPin, PWMValue);
-    digitalWrite(PinADrive, LOW);
-    digitalWrite(PinBDrive, HIGH);
+    digitalWrite(PinADrive, HIGH);
+    digitalWrite(PinBDrive, LOW);
   }
   //else if value is between 10 and -10 then we will stop the motor
   else{
@@ -94,14 +96,14 @@ void loop() {
   //////////////////////////////////////////////////////////////////////
 
   //we will use +- 10 as center
-  //If more than 10 then user wanna turn right
-  if (RXValue > 10){
+  //If less than -10 then user wanna move robot backward
+  if (RXValue < -20){
     //drive motor to turn right
     digitalWrite(PinASteering, HIGH);
     digitalWrite(PinBSteering, LOW);
   }
-  //If less than -10 then user wanna move robot backward
-  else if(RXValue < -10){
+  //If more than 10 then user wanna turn right
+  else if(RXValue > 20){
     //drive motor to turn left
     digitalWrite(PinASteering, LOW);
     digitalWrite(PinBSteering, HIGH);
