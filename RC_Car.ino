@@ -40,6 +40,13 @@ void setup() {
   pinMode(CH2, INPUT);
   pinMode(CH3, INPUT);
   pinMode(CH4, INPUT);
+
+  //define every motorDriverPin as Output
+  pinMode(PWMPin, OUTPUT);
+  pinMode(PinADrive, OUTPUT);
+  pinMode(PinBDrive, OUTPUT); 
+  pinMode(PinASteering, OUTPUT);
+  pinMode(PinBSteering, OUTPUT);
 }
 
 void loop() {
@@ -51,7 +58,7 @@ void loop() {
 
 
   if (ch1Value > 10){
-    
+
   }
   //For Debug Value Toggle this
   // Serial.print("Ch1: ");
