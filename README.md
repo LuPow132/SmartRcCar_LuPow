@@ -12,7 +12,7 @@ This project I gonna use esp32 wroom , IA6B, Flysky Remote, VTX transmitter and 
 After it done I will 3D print the car so I can modify it with anything in the future like attach Nerf Gun, speaker, Robot Arm on it!
 
 ## Diagram
-![image](https://github.com/rakky33/SmartRcCar_LuPow/assets/68886157/cc675fa0-aedb-4bfc-a95b-9c2ec318bf2f)
+![image](https://github.com/rakky33/SmartRcCar_LuPow/assets/68886157/a96a10aa-96c1-4fa5-a65e-c41b0bb77cf5)
 
 ## Adviser
 Benzlnw - engine consultant
