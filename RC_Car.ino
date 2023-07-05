@@ -1,10 +1,14 @@
 //////////////////////////////////////////////////////////
 //  This code write by LuPow for Smart RC car project   //
 //  Feel free to read and review my code. all diagram   //
-//  Will upload to github soon                          //
+//  Will upload to github                               //
 //             LuPow 2023 @ STBUU IROBOT                //          
 //////////////////////////////////////////////////////////
 
+
+#include <ESP32Servo.h>
+
+Servo SteeringServo;
 //define all PIN
 
 //INPUT PIN
@@ -12,19 +16,20 @@
 #define CH2 18 //RY
 #define CH3 5  //LX
 #define CH4 17 //LY
+#define CH5 16 // Toggle Switch
 
 //OUTPUT PIN
-#define PWMPin 16
-#define PinADrive 4
-#define PinBDrive 0
-#define PinASteering 2
-#define PinBSteering 15
+#define PWMPin 4
+#define PinADrive 0
+#define PinBDrive 2
+#define SteeringServoPin 15
 
 //Variable
 int RXValue;
 int RYValue;
 int LXValue;
 int LYValue; 
+bool LedSwitch;
 
 //function
 int readChannel(int channelInput, int minLimit, int maxLimit, int defaultValue){
@@ -48,13 +53,15 @@ void setup() {
   pinMode(CH2, INPUT);
   pinMode(CH3, INPUT);
   pinMode(CH4, INPUT);
+  pinMode(CH5, INPUT);
 
   //define every motorDriverPin as Output
   pinMode(PWMPin, OUTPUT);
   pinMode(PinADrive, OUTPUT);
   pinMode(PinBDrive, OUTPUT); 
-  pinMode(PinASteering, OUTPUT);
-  pinMode(PinBSteering, OUTPUT);
+
+  SteeringServo.attach(SteeringServoPin);
+
 }
 
 void loop() {
@@ -63,8 +70,8 @@ void loop() {
   RYValue = readChannel(CH2, -100, 100, 0);
   LXValue = readChannel(CH3, -100, 100, 0);
   LYValue = readChannel(CH4, -100, 100, 0);
+  LedSwitch = readSwitch(CH5, false);
 
-  Serial.println(RXValue);
   //Forward/Backward
   //////////////////////////////////////////////////////////////////////
 
@@ -95,23 +102,15 @@ void loop() {
   //Left/Right
   //////////////////////////////////////////////////////////////////////
 
-  //we will use +- 10 as center
-  //If less than -10 then user wanna move robot backward
-  if (RXValue < -20){
-    //drive motor to turn right
-    digitalWrite(PinASteering, HIGH);
-    digitalWrite(PinBSteering, LOW);
-  }
-  //If more than 10 then user wanna turn right
-  else if(RXValue > 20){
-    //drive motor to turn left
-    digitalWrite(PinASteering, LOW);
-    digitalWrite(PinBSteering, HIGH);
-  }
-  //else if value is between 10 and -10 then we will stop the motor
-  else{
-    digitalWrite(PinASteering, LOW);
-    digitalWrite(PinBSteering, LOW);
+  //we will use +- 15 as center
+  //If less than -15 or more than 20 then user wanna turn robot left or right
+  if (RXValue < -15 || RXValue > 15){
+    int SteeringValue = map(RXValue, -100, 100, 0, 180);
+    SteeringServo.write(SteeringValue);
+
+  //else if value is between 20 and -20 then we wnt servo to be at center
+  }else{
+    SteeringServo.write(90);
   }
   //////////////////////////////////////////////////////////////////////
 
