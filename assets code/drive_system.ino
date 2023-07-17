@@ -74,23 +74,23 @@ void loop() {
 
   //Forward/Backward
   //////////////////////////////////////////////////////////////////////
-
+  Serial.println(RYValue);
   //we will use +- 10 as center 
   //If more than 10 then user wanna move robot forward
   if (RYValue > 20){
     //drive motor forward with mapping value for PWM
     int PWMValue = map(abs(RYValue), 0, 100, 0, 255);
-    analogWrite(PWMPin, PWMValue);
     digitalWrite(PinADrive, LOW);
     digitalWrite(PinBDrive, HIGH);
+    analogWrite(PWMPin, PWMValue);
   }
   //If less than -10 then user wanna move robot backward
   else if(RYValue < -20){
     //drive motor backward with mapping value for PWM
     int PWMValue = map(abs(RYValue), 0, 100, 0, 255);
-    analogWrite(PWMPin, PWMValue);
     digitalWrite(PinADrive, HIGH);
     digitalWrite(PinBDrive, LOW);
+    analogWrite(PWMPin, PWMValue);
   }
   //else if value is between 10 and -10 then we will stop the motor
   else{
